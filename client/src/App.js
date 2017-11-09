@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { recognize, stopRecognize } from './helpers/recognize.js';
 import { podSearch } from './helpers/podsearch.js';
+import { Input, Button } from 'semantic-ui-react';
 
 class App extends Component {
   constructor(props) {
@@ -28,16 +29,16 @@ class App extends Component {
           <h2>Welcome to React</h2>
         </div>
         <label>Search Podcasts</label>
-        <input type='text' id='search'/>
-        <button onClick={ this.search }>Search</button>
+        <Input type='text' id='search'/>
+        <Button onClick={ this.search }>Search</Button>
         <ol> { this.state.data.map((pod) => {
           return <li>
             <a href={ pod.mygpo_link }>{ pod.title }</a>
           </li>;
         }) } </ol>
-        <input type='file' id='audiofile'/>
-        <button onClick={ recognize }>Recognize</button>
-        <button onClick={ stopRecognize }>Stop</button>
+        <Input type='file' id='audiofile'/>
+        <Button onClick={ recognize }>Recognize</Button>
+        <Button onClick={ stopRecognize }>Stop</Button>
         <p id='output'></p>
       </div>
     );
