@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { recognize } from './helpers/recognize.js';
+import { recognize, stopRecognize } from './helpers/recognize.js';
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class App extends Component {
         </div>
         <input type='file' id='audiofile'/>
         <button onClick={ recognize }>Recognize</button>
+        <button onClick={ stopRecognize }>Stop</button>
         <p id='output'></p>
       </div>
     );

@@ -2,6 +2,7 @@ import axios from 'axios';
 import recognizeFile from 'watson-speech/speech-to-text/recognize-file';
 
 let token;
+let stream;
 
 const tokenConfig = {
   url: '/api/token',
@@ -18,10 +19,16 @@ const getToken = () => {
     });
 };
 
+export const stopRecognize = () => {
+  if (stream) {
+    stream.stop();
+  }
+}
+
 export const recognize = () => {
   getToken()
     .then(() => {
-      recognizeFile({
+      stream = recognizeFile({
         token: token,
         file: document.querySelector('#audiofile').files[0],
         outputElement: '#output',
