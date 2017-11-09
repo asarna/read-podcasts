@@ -1,5 +1,5 @@
 const express = require("express");
-const watson = require('watson-developer-cloud');
+const watson = require('watson-developer-cloud'); 
 
 const app = express();
 
@@ -26,13 +26,6 @@ app.get('/api/token', (req, res, next) => {
       res.send(token);
     }
   });
-});
-
-app.get("/api/greeting", (req, res) => {
-  const param = req.query.q;
-
-  res.json({ greeting: param + ' from the server'});
-
 });
 
 app.listen(app.get("port"), () => {
