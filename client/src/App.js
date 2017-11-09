@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import sayHello from './client';
+import { recognize } from './helpers/recognize.js';
 
 class App extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class App extends Component {
         <p className="App-intro">
           { this.state.greeting }
         </p>
+        <button onClick={ recognize }>Recognize</button>
       </div>
     );
   }
