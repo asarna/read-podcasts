@@ -27,11 +27,11 @@ export default class PodPicker extends React.Component {
     })
   }
 
-  listEpisodes(url) {
+  listEpisodes(item) {
     this.setState({
       error: false
     });
-    getEpisodes(url)
+    getEpisodes(item.url)
       .then((response) => {
         this.setState({
           episodes: (response.items.length > 0) ? response.items : [],
@@ -44,7 +44,11 @@ export default class PodPicker extends React.Component {
           episodes: []
         });
       });
-  } 
+  }
+
+  selectEpisode(item) {
+    console.log('episode selected:', item.enclosure.link);
+  }
 
 	render() {
 		return <div className='pod-picker'>
@@ -68,6 +72,7 @@ export default class PodPicker extends React.Component {
             <p>Sorry, feed could  not be loaded at this time.</p> :
 		  			<PodLister
 		  				items={ this.state.episodes }
+              selectAction={ this.selectEpisode }
 		  			/>
 		  		}
 		  	</Grid.Column>

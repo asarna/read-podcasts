@@ -12,9 +12,9 @@ export default class PodItem extends React.Component {
 	}
 
 	handleClick() {
-		const { item: { url, title } } = this.props;
+		const { item, item: { title } } = this.props;
 		this.props.setActiveItem(title);
-		this.props.selectAction(url);
+		this.props.selectAction(item);
 	}
 
 	render() {
