@@ -1,6 +1,6 @@
 import React from 'react';
 import { getPodSearch, getEpisodes } from '../helpers/podsearch.js';
-import { Button, Input, Grid, Divider } from 'semantic-ui-react';
+import { Button, Input, Grid, Divider, Segment, Transition } from 'semantic-ui-react';
 import PodLister from './PodLister.js';
 
 export default class PodPicker extends React.Component {
@@ -10,7 +10,8 @@ export default class PodPicker extends React.Component {
 		this.state = {
 			podcasts: [],
 			episodes: [],
-      error: false
+      error: false,
+      showLister: false
 		}
 		this.search = this.search.bind(this);
 		this.listEpisodes = this.listEpisodes.bind(this);
@@ -19,7 +20,8 @@ export default class PodPicker extends React.Component {
 
 	search() {
     this.setState({
-      error: false
+      error: false,
+      showLister: true
     })
     getPodSearch().then((response) => {
       this.setState({
@@ -54,32 +56,43 @@ export default class PodPicker extends React.Component {
 
 	render() {
 		return <div className='pod-picker'>
-      <Input 
-        type='text' 
-        id='search'
-        placeholder={ 'Search for a podcast...'}
-        fluid
-        action={<Button onClick={ this.search }>Search</Button>}
-      />
-      <Divider />
-      <Grid columns={2} divided>
-		    <Grid.Column>
-		    	<PodLister 
-		      	items={ this.state.podcasts }
-		      	selectAction={ this.listEpisodes }
-		      />
-		    </Grid.Column>
-		  	<Grid.Column>
-		  		{ this.state.error ?
-            <p>Sorry, feed could  not be loaded at this time.</p> :
-		  			<PodLister
-		  				items={ this.state.episodes }
-              selectAction={ this.selectEpisode }
-		  			/>
-		  		}
-		  	</Grid.Column>
-  		</Grid>
+      <Segment color='olive'>
+        <Input 
+          type='text' 
+          id='search'
+          placeholder={ 'Search for a podcast...'}
+          fluid
+          action={<Button onClick={ this.search }>Search</Button>}
+        />
+      </Segment>
       
+        <Transition 
+          animation='fade down'
+          duration={500}
+          visible={ this.state.showLister }
+        >
+          <Grid 
+            as={Segment} 
+            columns={2} 
+            divided
+          >
+    		    <Grid.Column>
+    		    	<PodLister 
+    		      	items={ this.state.podcasts }
+    		      	selectAction={ this.listEpisodes }
+    		      />
+    		    </Grid.Column>
+    		  	<Grid.Column>
+    		  		{ this.state.error ?
+                <p>Sorry, feed could  not be loaded at this time.</p> :
+    		  			<PodLister
+    		  				items={ this.state.episodes }
+                  selectAction={ this.selectEpisode }
+    		  			/>
+    		  		}
+    		  	</Grid.Column>
+    		  </Grid>
+          </Transition>
 	  </div>
 	}
 }

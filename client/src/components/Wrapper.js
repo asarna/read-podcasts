@@ -1,7 +1,7 @@
 import React from 'react';
 import PodPicker from './PodPicker.js';
 import Transcriber from './Transcriber.js';
-import { Divider } from 'semantic-ui-react';
+import { Divider, Segment } from 'semantic-ui-react';
 
 export default class Wrapper extends React.Component {
 
@@ -33,12 +33,11 @@ export default class Wrapper extends React.Component {
       <PodPicker 
         selectToTranscribe={ this.selectToTranscribe }
       />
-      <Divider />
       { this.state.showTranscriber && 
-        <Transcriber 
-          audio={ this.state.episodeSelected }
+        <Transcriber as={Segment}
+          audio={ this.state.episodeSelected } 
         /> 
       }
     </div>
-  }
+  }   
 }

@@ -25,12 +25,12 @@ export const stopRecognize = () => {
   }
 }
 
-export const recognize = () => {
+export const recognize = (url) => {
   getToken()
     .then(() => {
       stream = recognizeFile({
         token: token,
-        file: document.querySelector('#audiofile').files[0],
+        file: url,
         outputElement: '#output',
         play: true
       })
