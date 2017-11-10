@@ -11,22 +11,32 @@ export default class PodPicker extends React.Component {
 			data: []
 		}
 		this.search = this.search.bind(this);
+		this.updateList = this.updateList.bind(this);
 	}
 
+	updateList(data) {
+		console.log('updateList was called');
+		this.setState({
+			data: data
+		});
+		console.log('podpicker state', this.state);
+	}
 	search() {
     podSearch().then((response) => {
-        this.setState({
-          data: response
-        })
-      })
+      this.updateList(response);
+    });
   }
 
 	render() {
+		console.log('podpicker re-rendered');
 		return <div>
 			<label>Search Podcasts</label>
       <Input type='text' id='search'/>
       <Button onClick={ this.search }>Search</Button>
-      <PodLister items={ this.state.data }/>
+      <PodLister 
+      	items={ this.state.data }
+      	update={ this.updateList }
+      />
 	  </div>
 	}
 }

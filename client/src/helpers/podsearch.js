@@ -12,11 +12,10 @@ export const podSearch = () => {
     })
 }
 
-export const podInfo = (feedUrl) => {
-	const url = `http://gpodder.net/api/2/data/podcast.json?url=${feedUrl}`;
+export const episodeList = (feedUrl) => {
+	const url = `https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`;
 	return axios.get(url)
 		.then((response) => {
-			console.log(response);
 			return response.data;
 		})
 }
