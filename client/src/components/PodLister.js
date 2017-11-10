@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Image } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 import PodItem from './PodItem.js';
 
 export default class PodLister extends React.Component {
@@ -9,7 +9,7 @@ export default class PodLister extends React.Component {
       return <PodItem 
       	item={ pod } 
       	key={ pod.title }
-      	listEpisodes={ this.props.listEpisodes }
+      	selectAction={ this.props.selectAction }
       />
     }) } </List>
 	}

@@ -1,30 +1,22 @@
 import React from 'react';
-import { episodeList } from '../helpers/podsearch.js';
 import { List, Image } from 'semantic-ui-react';
 
 export default class PodItem extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.info = this.info.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
-	info() {
+	handleClick() {
 		const { item: { url } } = this.props;
-		episodeList(url)
-			.then((response) => {
-				console.log('response from info()', response);
-				this.props.listEpisodes(response.items);
-			})	
-			.catch((error) => {
-				this.props.listEpisodes('sorry');
-			})
+		this.props.selectAction(url);
 	}
 
 	render() {
 		const { item } = this.props;
-		return <List.Item onClick={ this.info }> 
-    	<List.Content floated='right'>
+		return <List.Item onClick={ this.handleClick }> 
+    	<List.Content>
 	    	{ item.logo_url &&
 					<Image
 						size='tiny'

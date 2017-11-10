@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { recognize, stopRecognize } from './helpers/recognize.js';
-import { podSearch } from './helpers/podsearch.js';
 import PodPicker from './components/PodPicker.js';
 import { Container } from 'semantic-ui-react';
 
