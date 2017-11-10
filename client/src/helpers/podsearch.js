@@ -8,7 +8,15 @@ export const podSearch = () => {
   console.log('called', url);
   return axios.get(url)
     .then((response) => {
-      console.log(response);
       return response.data;
     })
+}
+
+export const podInfo = (feedUrl) => {
+	const url = `http://gpodder.net/api/2/data/podcast.json?url=${feedUrl}`;
+	return axios.get(url)
+		.then((response) => {
+			console.log(response);
+			return response.data;
+		})
 }
