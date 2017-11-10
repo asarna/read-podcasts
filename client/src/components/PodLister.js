@@ -9,7 +9,7 @@ export default class PodLister extends React.Component {
       return <PodItem 
       	item={ pod } 
       	key={ pod.title }
-      	update={ this.props.update }
+      	listEpisodes={ this.props.listEpisodes }
       />
     }) } </List>
 	}

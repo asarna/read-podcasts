@@ -1,6 +1,6 @@
 import React from 'react';
-import { podSearch } from '../helpers/podsearch.js';
-import { Button, Input, Image } from 'semantic-ui-react';
+import { podSearch, episodeList } from '../helpers/podsearch.js';
+import { Button, Input, Image, Grid } from 'semantic-ui-react';
 import PodLister from './PodLister.js';
 
 export default class PodPicker extends React.Component {
@@ -8,35 +8,49 @@ export default class PodPicker extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: []
+			podcasts: [],
+			episodes: []
 		}
 		this.search = this.search.bind(this);
-		this.updateList = this.updateList.bind(this);
+		this.listEpisodes = this.listEpisodes.bind(this);
 	}
 
-	updateList(data) {
-		console.log('updateList was called');
-		this.setState({
-			data: data
-		});
-		console.log('podpicker state', this.state);
-	}
 	search() {
     podSearch().then((response) => {
-      this.updateList(response);
-    });
+      this.setState({
+				podcasts: response
+			});
+    })
   }
 
+  listEpisodes(items) {
+  	console.log('listEpisodes was called');
+  	this.setState({
+  		episodes: items
+  	})
+  } 
+
 	render() {
-		console.log('podpicker re-rendered');
 		return <div>
 			<label>Search Podcasts</label>
       <Input type='text' id='search'/>
       <Button onClick={ this.search }>Search</Button>
-      <PodLister 
-      	items={ this.state.data }
-      	update={ this.updateList }
-      />
+      <Grid columns={2} divided>
+		    <Grid.Column>
+		    	<PodLister 
+		      	items={ this.state.podcasts }
+		      	listEpisodes={ this.listEpisodes }
+		      />
+		    </Grid.Column>
+		  	<Grid.Column>
+		  		{ this.state.error || 
+		  			<PodLister
+		  				items={ this.state.episodes }
+		  			/>
+		  		}
+		  	</Grid.Column>
+  		</Grid>
+      
 	  </div>
 	}
 }
