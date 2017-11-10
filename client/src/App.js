@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import PodPicker from './components/PodPicker.js';
-import Transcriber from './components/Transcriber.js';
-import { Container, Divider } from 'semantic-ui-react';
+import Wrapper from './components/Wrapper.js';
+import { Container } from 'semantic-ui-react';
 
 class App extends Component {
 
@@ -12,9 +11,7 @@ class App extends Component {
         <div className="App-header">
           <h2>Welcome to React</h2>
         </div>
-        <PodPicker />
-        <Divider />
-        <Transcriber />
+        <Wrapper />
       </Container>
     );
   }

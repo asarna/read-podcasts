@@ -14,6 +14,7 @@ export default class PodPicker extends React.Component {
 		}
 		this.search = this.search.bind(this);
 		this.listEpisodes = this.listEpisodes.bind(this);
+    this.selectEpisode = this.selectEpisode.bind(this);
 	}
 
 	search() {
@@ -28,6 +29,7 @@ export default class PodPicker extends React.Component {
   }
 
   listEpisodes(item) {
+    this.props.selectToTranscribe('');
     this.setState({
       error: false
     });
@@ -47,7 +49,7 @@ export default class PodPicker extends React.Component {
   }
 
   selectEpisode(item) {
-    console.log('episode selected:', item.enclosure.link);
+    this.props.selectToTranscribe(item.enclosure.link);
   }
 
 	render() {
