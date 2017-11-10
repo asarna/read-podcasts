@@ -5,24 +5,32 @@ export default class PodItem extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			selected: false
+		}
 		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleClick() {
-		const { item: { url } } = this.props;
+		const { item: { url, title } } = this.props;
+		this.props.setActiveItem(title);
 		this.props.selectAction(url);
 	}
 
 	render() {
 		const { item } = this.props;
-		return <List.Item onClick={ this.handleClick }> 
+		return <List.Item 
+			onClick={ this.handleClick }
+			name={ item.title }
+			active={ this.props.active }
+		> 
     	<List.Content>
 	    	{ item.logo_url &&
 					<Image
 						size='tiny'
 						floated='left'
 						rounded
-						src={ item.logo_url } 
+						src={ item.logo_url }
 					/>
 				}
       	<List.Header>{ item.title.substring(0, 150) }</List.Header>

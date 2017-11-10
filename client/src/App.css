@@ -12,3 +12,8 @@
 .App-intro {
   font-size: large;
 }
+
+.pod-lister {
+	overflow-y: scroll;
+	max-height: 300px;
+}

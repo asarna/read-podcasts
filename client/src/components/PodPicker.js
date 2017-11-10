@@ -1,6 +1,6 @@
 import React from 'react';
 import { getPodSearch, getEpisodes } from '../helpers/podsearch.js';
-import { Button, Input, Grid } from 'semantic-ui-react';
+import { Button, Input, Grid, Divider } from 'semantic-ui-react';
 import PodLister from './PodLister.js';
 
 export default class PodPicker extends React.Component {
@@ -47,10 +47,15 @@ export default class PodPicker extends React.Component {
   } 
 
 	render() {
-		return <div>
-			<label>Search Podcasts</label>
-      <Input type='text' id='search'/>
-      <Button onClick={ this.search }>Search</Button>
+		return <div className='pod-picker'>
+      <Input 
+        type='text' 
+        id='search'
+        placeholder={ 'Search for a podcast...'}
+        fluid
+        action={<Button onClick={ this.search }>Search</Button>}
+      />
+      <Divider />
       <Grid columns={2} divided>
 		    <Grid.Column>
 		    	<PodLister 
