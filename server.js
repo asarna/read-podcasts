@@ -1,5 +1,7 @@
 const express = require("express");
 const watson = require('watson-developer-cloud'); 
+const fs = require('fs');
+const request = require('request');
 
 const app = express();
 
@@ -26,6 +28,11 @@ app.get('/api/token', (req, res, next) => {
       res.send(token);
     }
   });
+});
+
+app.get('/download/:url', (req, res) => {
+  const urlDecoded = decodeURIComponent(req.params.url);
+  request(urlDecoded).pipe(fs.createWriteStream(__dirname + "/audio/file.mp3"));  
 });
 
 app.listen(app.get("port"), () => {

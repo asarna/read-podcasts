@@ -1,5 +1,6 @@
 import React from 'react';
 import { recognize, stopRecognize } from '../helpers/recognize.js';
+import { download } from '../helpers/download.js';
 import { Button } from 'semantic-ui-react';
 
 export default class Transcriber extends React.Component {
@@ -10,7 +11,7 @@ export default class Transcriber extends React.Component {
   }
 
   handleClick() {
-    recognize(this.props.audio);
+    download(this.props.audio);
   }
 
   render() {

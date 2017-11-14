@@ -9,6 +9,7 @@
     "form-data": "^2.3.1",
     "fs": "0.0.2",
     "react-dom": "^16.1.0",
+    "request": "^2.83.0",
     "rss-to-json": "^1.0.3",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.76.0",

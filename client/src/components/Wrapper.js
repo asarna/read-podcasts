@@ -35,7 +35,7 @@ export default class Wrapper extends React.Component {
       />
       { this.state.showTranscriber && 
         <Transcriber as={Segment}
-          audio={ this.state.episodeSelected } 
+          audio={ this.state.selectedEpisode } 
         /> 
       }
     </div>
