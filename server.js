@@ -32,9 +32,13 @@ app.get('/api/token', (req, res, next) => {
   });
 });
 
-app.get('/download/:url', (req, res) => {
+app.get('/download/:url', (req, res, next) => {
   const urlDecoded = decodeURIComponent(req.params.url);
-  request(urlDecoded).pipe(fs.createWriteStream(__dirname + "/static/file.mp3"));  
+  const file = fs.createWriteStream(__dirname + "/static/file.mp3");
+  request(urlDecoded).pipe(file).on('finish', () => {
+    console.log('done');
+    next();
+  });  
   //fs.createReadStream(__dirname+ '/client/audio/file.mp3').pipe(request.post('https://stream.watsonplatform.net/speech-to-text/api'))
 });
 

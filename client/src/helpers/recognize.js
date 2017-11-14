@@ -31,8 +31,7 @@ export const recognize = () => {
       stream = recognizeFile({
         token: token,
         file: '/file.mp3',
-        outputElement: '#output',
-        play: true
+        outputElement: '#output'
       })
     })
 }

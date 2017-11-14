@@ -10,8 +10,8 @@ export default class Wrapper extends React.Component {
     this.state = {
       selectedEpisode: '',
       showTranscriber: false
-    }
-    this.selectToTranscribe = this.selectToTranscribe.bind(this)
+    };
+    this.selectToTranscribe = this.selectToTranscribe.bind(this);
   }
 
   selectToTranscribe(url) {

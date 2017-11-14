@@ -11,11 +11,10 @@ export default class Transcriber extends React.Component {
   }
 
   handleClick() {
-    //download(this.props.audio)
-      /*.then(() => {
+    download(this.props.audio)
+      .then(() => {
         recognize();
-      })*/
-    recognize();
+      }); 
   }
 
   render() {
