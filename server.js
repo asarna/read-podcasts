@@ -19,6 +19,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
+app.use(express.static('static'));
+
 // Get token using your credentials
 app.get('/api/token', (req, res, next) => {
   authService.getToken((err, token) => {
@@ -32,7 +34,8 @@ app.get('/api/token', (req, res, next) => {
 
 app.get('/download/:url', (req, res) => {
   const urlDecoded = decodeURIComponent(req.params.url);
-  request(urlDecoded).pipe(fs.createWriteStream(__dirname + "/audio/file.mp3"));  
+  request(urlDecoded).pipe(fs.createWriteStream(__dirname + "/static/file.mp3"));  
+  //fs.createReadStream(__dirname+ '/client/audio/file.mp3').pipe(request.post('https://stream.watsonplatform.net/speech-to-text/api'))
 });
 
 app.listen(app.get("port"), () => {

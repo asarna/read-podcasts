@@ -25,12 +25,12 @@ export const stopRecognize = () => {
   }
 }
 
-export const recognize = (url) => {
+export const recognize = () => {
   getToken()
     .then(() => {
       stream = recognizeFile({
         token: token,
-        file: url,
+        file: '/file.mp3',
         outputElement: '#output',
         play: true
       })
