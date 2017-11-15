@@ -18,3 +18,7 @@
 	overflow-y: scroll;
 	height: 300px;
 }
+
+.loader {
+	height: 100%;
+}

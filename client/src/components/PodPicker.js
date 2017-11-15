@@ -1,6 +1,6 @@
 import React from 'react';
 import { getPodSearch, getEpisodes } from '../helpers/podsearch.js';
-import { Button, Input, Grid, Divider, Segment, Transition } from 'semantic-ui-react';
+import { Button, Input, Grid, Divider, Segment, Transition, Loader } from 'semantic-ui-react';
 import PodLister from './PodLister.js';
 
 export default class PodPicker extends React.Component {
@@ -11,7 +11,9 @@ export default class PodPicker extends React.Component {
 			podcasts: [],
 			episodes: [],
       error: false,
-      showLister: false
+      showLister: false,
+      loadingPods: false,
+      loadingEpisodes: false
 		}
 		this.search = this.search.bind(this);
 		this.listEpisodes = this.listEpisodes.bind(this);
@@ -21,11 +23,13 @@ export default class PodPicker extends React.Component {
 	search() {
     this.setState({
       error: false,
-      showLister: true
+      loading: true
     })
     getPodSearch().then((response) => {
       this.setState({
-				podcasts: response
+				podcasts: response,
+        loadingPods: false,
+        showLister: true
 			});
     })
   }
@@ -33,25 +37,55 @@ export default class PodPicker extends React.Component {
   listEpisodes(item) {
     this.props.selectToTranscribe('');
     this.setState({
-      error: false
+      error: false,
+      loadingEpisodes: true,
+      episodes: []
     });
     getEpisodes(item.url)
       .then((response) => {
         this.setState({
           episodes: (response.items.length > 0) ? response.items : [],
-          error: !(response.items.length > 0)
+          error: !(response.items.length > 0),
+          loadingEpisodes: false
         });
       })  
       .catch((error) => {
         this.setState({
           error: true,
-          episodes: []
+          episodes: [],
+          loadingEpisodes: false
         });
       });
   }
 
   selectEpisode(item) {
     this.props.selectToTranscribe(item.enclosure.link);
+  }
+
+  renderResults() {
+    return <Grid 
+      as={Segment} 
+      columns={2} 
+      divided
+    >
+      <Grid.Column>
+        <PodLister 
+          items={ this.state.podcasts }
+          selectAction={ this.listEpisodes }
+        />    
+      </Grid.Column>
+      <Grid.Column>
+        { this.state.loadingEpisodes && <Loader active /> }
+        { this.state.error ?
+          <p>Sorry, feed could  not be loaded at this time.</p> :
+          <PodLister
+            items={ this.state.episodes }
+            selectAction={ this.selectEpisode }
+            visible={ !this.state.loadingEpisodes }
+          />
+        }
+      </Grid.Column>
+    </Grid>
   }
 
 	render() {
@@ -65,34 +99,14 @@ export default class PodPicker extends React.Component {
           action={<Button onClick={ this.search }>Search</Button>}
         />
       </Segment>
-      
-        <Transition 
-          animation='fade down'
-          duration={500}
-          visible={ this.state.showLister }
-        >
-          <Grid 
-            as={Segment} 
-            columns={2} 
-            divided
-          >
-    		    <Grid.Column>
-    		    	<PodLister 
-    		      	items={ this.state.podcasts }
-    		      	selectAction={ this.listEpisodes }
-    		      />
-    		    </Grid.Column>
-    		  	<Grid.Column>
-    		  		{ this.state.error ?
-                <p>Sorry, feed could  not be loaded at this time.</p> :
-    		  			<PodLister
-    		  				items={ this.state.episodes }
-                  selectAction={ this.selectEpisode }
-    		  			/>
-    		  		}
-    		  	</Grid.Column>
-    		  </Grid>
-          </Transition>
+      { this.state.loadingPods && <Loader active /> }
+      <Transition 
+        animation='fade down'
+        duration={500}
+        visible={ this.state.showLister && !this.state.loadingPods }
+      >
+        { this.renderResults() }
+      </Transition>   
 	  </div>
 	}
 }
