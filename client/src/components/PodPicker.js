@@ -23,7 +23,7 @@ export default class PodPicker extends React.Component {
 	search() {
     this.setState({
       error: false,
-      loading: true
+      loadingPods: true
     })
     getPodSearch().then((response) => {
       this.setState({
