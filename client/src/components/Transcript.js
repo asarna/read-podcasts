@@ -1,12 +1,16 @@
 import React from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Header } from 'semantic-ui-react';
 
 export default class Transcript extends React.Component {
   render() {
     return <Segment 
-      id='output'
       padded='very'
-    >The transcript is processing. This may take a few moments.
+      id='transcript'
+    >
+    <Header as='h3'>{ this.props.title }</Header>
+        <p id='output'>
+            The transcript is processing. This may take a few moments.
+        </p>
     </Segment>
   }
 }

@@ -22,3 +22,11 @@
 .loader {
 	height: 100%;
 }
+
+#output {
+  line-height: 1.7em;
+}
+
+#transcript {
+  margin-bottom: 30px;
+}

@@ -40,7 +40,7 @@ export default class Transcriber extends React.Component {
       >
         <div>
           <Divider hidden />
-          <Transcript/>
+          <Transcript title={this.props.title}/>
         </div>
       </Transition>
     </div>

@@ -59,7 +59,7 @@ export default class PodPicker extends React.Component {
   }
 
   selectEpisode(item) {
-    this.props.selectToTranscribe(item.enclosure.link);
+    this.props.selectToTranscribe(item);
   }
 
   renderResults() {

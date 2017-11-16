@@ -14,11 +14,12 @@ export default class Wrapper extends React.Component {
     this.selectToTranscribe = this.selectToTranscribe.bind(this);
   }
 
-  selectToTranscribe(url) {
-    if(url) {
+  selectToTranscribe(item) {
+    if(item) {
       this.setState({
-        selectedEpisode: url,
-        showTranscriber: true
+        selectedEpisode: item.enclosure.link,
+        showTranscriber: true,
+        episodeTitle: item.title
       })
     } else {
       this.setState({
@@ -41,6 +42,7 @@ export default class Wrapper extends React.Component {
         >
           <div>
             <Transcriber as={Segment}
+              title={ this.state.episodeTitle }
               audio={ this.state.selectedEpisode } 
             />
           </div>
