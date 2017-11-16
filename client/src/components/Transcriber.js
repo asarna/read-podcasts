@@ -33,8 +33,16 @@ export default class Transcriber extends React.Component {
       >
         Transcribe
       </Button>
-      <Button onClick={ stopRecognize }>Stop</Button>
-      <p id='output'></p>
+      <Transition 
+        animation='fade down'
+        duration={500}
+        visible={ this.state.showTranscript }
+      >
+        <div>
+          <Divider hidden />
+          <Transcript/>
+        </div>
+      </Transition>
     </div>
   }
 }
