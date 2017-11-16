@@ -1,16 +1,23 @@
 import React from 'react';
 import { recognize, stopRecognize } from '../helpers/recognize.js';
 import { download } from '../helpers/download.js';
-import { Button } from 'semantic-ui-react';
+import { Button, Transition, Divider } from 'semantic-ui-react';
+import Transcript from './Transcript';
 
 export default class Transcriber extends React.Component {
 
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      showTranscript: false
+    }
   }
 
   handleClick() {
+    this.setState({
+      showTranscript: true
+    });
     download(this.props.audio)
       .then(() => {
         recognize();
