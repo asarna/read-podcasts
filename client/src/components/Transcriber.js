@@ -22,20 +22,23 @@ export default class Transcriber extends React.Component {
       .then(() => {
         recognize();
       }); 
+    this.props.startTranscribing();
   }
 
   render() {
     return <div>
-      <Button 
-        onClick={ this.handleClick }
-        fluid
-        color='olive'
-      >
-        Transcribe
-      </Button>
+      { !this.state.showTranscript &&
+        <Button 
+          onClick={ this.handleClick }
+          fluid
+          color='olive'
+        >
+          Transcribe
+        </Button>
+      }  
       <Transition 
         animation='fade down'
-        duration={500}
+        duration={800}
         visible={ this.state.showTranscript }
       >
         <div>

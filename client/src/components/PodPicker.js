@@ -96,7 +96,12 @@ export default class PodPicker extends React.Component {
           id='search'
           placeholder={ 'Search for a podcast...'}
           fluid
-          action={<Button onClick={ this.search }>Search</Button>}
+          action={<Button 
+            onClick={ this.search }
+            color='olive'
+            >
+              Search
+            </Button>}
         />
       </Segment>
       { this.state.loadingPods && <Loader active /> }
