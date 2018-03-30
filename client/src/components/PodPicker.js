@@ -70,14 +70,15 @@ export default class PodPicker extends React.Component {
   }
 
   renderResults() {
-    const { podcasts, loadingEpisodes, error, episodes } = this.state;
+    const { podcasts, loadingEpisodes, loadingPods, error, episodes } = this.state;
     return <Grid 
       as={Segment} 
       columns={2} 
       divided
     >
       <Grid.Column>
-      { podcasts.length === 0
+      { loadingPods && <Loader active /> }
+      { podcasts.length === 0 && !loadingPods
         ? <p>No results. Some terms you can try searching for: 'npr' or 'love and radio'.</p>
         : <PodLister 
             items={ podcasts }
@@ -100,7 +101,7 @@ export default class PodPicker extends React.Component {
   }
 
 	render() {
-    const { showLister, loadingPods } = this.state;
+    const { showLister } = this.state;
 
 		return <div className='pod-picker'>
       <Segment color='olive'>
@@ -117,11 +118,10 @@ export default class PodPicker extends React.Component {
             </Button>}
         />
       </Segment>
-      { loadingPods && <Loader active /> }
       <Transition 
         animation='fade down'
         duration={500}
-        visible={ showLister && !loadingPods }
+        visible={ showLister }
       >
         { this.renderResults() }
       </Transition>   
