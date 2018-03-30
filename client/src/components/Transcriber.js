@@ -10,6 +10,8 @@ export default class Transcriber extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.handleBackClick = this.handleBackClick.bind(this);
+    this.stopTranscribing = this.stopTranscribing.bind(this);
     this.state = {
       showTranscript: false,
       token: '',
@@ -34,6 +36,9 @@ export default class Transcriber extends React.Component {
   };
   
   startTranscribing() {
+    this.setState({
+      transcribing: true
+    });
     download(this.props.audio).then(() => {
       this.getToken().then(() => {
         const stream = recognizeFile(({
@@ -45,16 +50,31 @@ export default class Transcriber extends React.Component {
           objectMode: true,
           interim_results: true,
         }));
+        this.stream = stream;
         stream
           .on('data', (msg) => {
             if (msg.results[0].final) {
               this.setState({ transcript: this.state.transcript.concat(msg.results[0].alternatives[0].transcript) })
             }
           })
-          .on('end', () => {})
+          .on('end', this.handleTranscriptEnd)
           .on('error',() => {});
       });
     });
+  }
+
+  stopTranscribing() {
+    if(this.stream) {
+      this.stream.stop();
+      this.stream.removeAllListeners();
+    }
+    this.setState({
+      transcribing: false
+    });
+  }
+
+  handleTranscriptEnd() {
+    this.stopTranscribing();
   }
 
   handleClick() {
@@ -65,6 +85,18 @@ export default class Transcriber extends React.Component {
       showPodPicker: false
     });
     this.startTranscribing();
+  }
+
+  handleBackClick() {
+    this.stopTranscribing();
+    this.setState({
+      showTranscript: false,
+      transcript: ''
+    });
+    this.props.setWrapperState({
+      showPodPicker: true,
+      showTranscriber: false
+    });
   }
 
   render() {
@@ -85,7 +117,13 @@ export default class Transcriber extends React.Component {
       >
         <div>
           <Divider hidden />
-          <Transcript title={this.props.title} transcript={ this.state.transcript }/>
+          <Button content='Stop' icon='stop' labelPosition='left' color='olive' onClick={this.stopTranscribing}/>
+          <Button content='Back to search' icon='left arrow' labelPosition='left' color='olive' onClick={this.handleBackClick}/>
+          <Transcript 
+            title={ this.props.title } 
+            transcript={ this.state.transcript }
+            transcribing={ this.state.transcribing }
+          />
         </div>
       </Transition>
     </div>
