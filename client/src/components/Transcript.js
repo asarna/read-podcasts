@@ -3,16 +3,19 @@ import { Segment, Header, Icon } from 'semantic-ui-react';
 
 export default class Transcript extends React.Component {
   render() {
+    const { transcript, transcribing, title } = this.props;
+
     return <Segment 
       padded='very'
+      className='transcript'
     >
-    <Header as='h3'>{ this.props.title }</Header>
+    <Header as='h3'>{ title }</Header>
       <p>
-        { (this.props.transcript === '')
+        { (transcript === '')
           ? <em>The transcript is processing. This may take a few moments.</em>
-          : this.props.transcript
+          : transcript
         }
-        {this.props.transcribing && <Icon loading name='spinner' />}
+        { transcribing && <Icon loading name='spinner' /> }
       </p>
     </Segment>
   }

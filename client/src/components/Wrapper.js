@@ -36,11 +36,12 @@ export default class Wrapper extends React.Component {
   }
 
   render() {
+    const { showPodPicker, showTranscriber, episodeTitle, selectedEpisode } = this.state;
     return <div>
       <Transition 
         animation='fade down'
         duration={100}
-        visible={ this.state.showPodPicker }
+        visible={ showPodPicker }
       >
         <div>
           <PodPicker 
@@ -51,12 +52,12 @@ export default class Wrapper extends React.Component {
         <Transition
           animation='fade down'
           duration={500}
-          visible={ this.state.showTranscriber }
+          visible={ showTranscriber }
         >
           <div>
             <Transcriber as={Segment}
-              title={ this.state.episodeTitle }
-              audio={ this.state.selectedEpisode } 
+              title={ episodeTitle }
+              audio={ selectedEpisode } 
               setWrapperState={ this.setWrapperState }
             />
           </div>

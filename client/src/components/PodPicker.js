@@ -23,8 +23,10 @@ export default class PodPicker extends React.Component {
 	search() {
     this.setState({
       error: false,
-      loadingPods: true
-    })
+      loadingPods: true,
+      podcasts: [],
+			episodes: []
+    });
     getPodSearch().then((response) => {
       this.setState({
 				podcasts: response,
@@ -68,28 +70,29 @@ export default class PodPicker extends React.Component {
   }
 
   renderResults() {
+    const { podcasts, loadingEpisodes, error, episodes } = this.state;
     return <Grid 
       as={Segment} 
       columns={2} 
       divided
     >
       <Grid.Column>
-      { this.state.podcasts.length === 0
+      { podcasts.length === 0
         ? <p>No results. Some terms you can try searching for: 'npr' or 'love and radio'.</p>
         : <PodLister 
-            items={ this.state.podcasts }
+            items={ podcasts }
             selectAction={ this.listEpisodes }
         />    
       }
       </Grid.Column>
       <Grid.Column>
-        { this.state.loadingEpisodes && <Loader active /> }
-        { this.state.error ?
+        { loadingEpisodes && <Loader active /> }
+        { error ?
           <p>Sorry, feed could  not be loaded at this time.</p> :
           <PodLister
-            items={ this.state.episodes }
+            items={ episodes }
             selectAction={ this.selectEpisode }
-            visible={ !this.state.loadingEpisodes }
+            visible={ !loadingEpisodes }
           />
         }
       </Grid.Column>
@@ -97,6 +100,8 @@ export default class PodPicker extends React.Component {
   }
 
 	render() {
+    const { showLister, loadingPods } = this.state;
+
 		return <div className='pod-picker'>
       <Segment color='olive'>
         <Input 
@@ -112,11 +117,11 @@ export default class PodPicker extends React.Component {
             </Button>}
         />
       </Segment>
-      { this.state.loadingPods && <Loader active /> }
+      { loadingPods && <Loader active /> }
       <Transition 
         animation='fade down'
         duration={500}
-        visible={ this.state.showLister && !this.state.loadingPods }
+        visible={ showLister && !loadingPods }
       >
         { this.renderResults() }
       </Transition>   

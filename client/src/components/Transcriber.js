@@ -24,6 +24,7 @@ export default class Transcriber extends React.Component {
       url: '/api/token',
       method: 'get',
     }
+    
     return axios(tokenConfig)
       .then((response) => {
         this.setState({
@@ -100,8 +101,10 @@ export default class Transcriber extends React.Component {
   }
 
   render() {
+    const { showTranscript, transcript, transcribing } = this.state;
+
     return <div>
-      { !this.state.showTranscript &&
+      { !showTranscript &&
         <Button 
           onClick={ this.handleClick }
           fluid
@@ -113,16 +116,16 @@ export default class Transcriber extends React.Component {
       <Transition 
         animation='fade down'
         duration={800}
-        visible={ this.state.showTranscript }
+        visible={ showTranscript }
       >
         <div>
           <Divider hidden />
-          <Button content='Stop' icon='stop' labelPosition='left' color='olive' onClick={this.stopTranscribing}/>
-          <Button content='Back to search' icon='left arrow' labelPosition='left' color='olive' onClick={this.handleBackClick}/>
+          <Button content='Stop' icon='stop' labelPosition='left' color='olive' onClick={ this.stopTranscribing }/>
+          <Button content='Back to search' icon='left arrow' labelPosition='left' color='olive' onClick={ this.handleBackClick }/>
           <Transcript 
             title={ this.props.title } 
-            transcript={ this.state.transcript }
-            transcribing={ this.state.transcribing }
+            transcript={ transcript }
+            transcribing={ transcribing }
           />
         </div>
       </Transition>
