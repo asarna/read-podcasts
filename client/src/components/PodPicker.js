@@ -31,6 +31,11 @@ export default class PodPicker extends React.Component {
         loadingPods: false,
         showLister: true
 			});
+    }).catch((error) => {
+      this.setState({
+        loadingPods: false,
+        error: true
+      });
     })
   }
 
@@ -69,10 +74,13 @@ export default class PodPicker extends React.Component {
       divided
     >
       <Grid.Column>
-        <PodLister 
-          items={ this.state.podcasts }
-          selectAction={ this.listEpisodes }
+      { this.state.podcasts.length == 0
+        ? <p>No results. Some terms you can try searching for: 'npr' or 'love and radio'.</p>
+        : <PodLister 
+            items={ this.state.podcasts }
+            selectAction={ this.listEpisodes }
         />    
+      }
       </Grid.Column>
       <Grid.Column>
         { this.state.loadingEpisodes && <Loader active /> }
