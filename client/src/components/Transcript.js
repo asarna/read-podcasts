@@ -5,11 +5,13 @@ export default class Transcript extends React.Component {
   render() {
     return <Segment 
       padded='very'
-      id='transcript'
     >
     <Header as='h3'>{ this.props.title }</Header>
-        <p id='output'>
-            The transcript is processing. This may take a few moments.
+        <p>
+          { (this.props.transcript === '')
+            ? 'The transcript is processing. This may take a few moments.'
+            : this.props.transcript
+          }
         </p>
     </Segment>
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PodPicker from './PodPicker.js';
 import Transcriber from './Transcriber.js';
-import { Divider, Segment, Transition } from 'semantic-ui-react';
+import { Segment, Transition } from 'semantic-ui-react';
 
 export default class Wrapper extends React.Component {
 
@@ -13,6 +13,7 @@ export default class Wrapper extends React.Component {
       showPodPicker: true
     };
     this.selectToTranscribe = this.selectToTranscribe.bind(this);
+    this.setWrapperState = this.setWrapperState.bind(this);
   }
 
   selectToTranscribe(item) {
@@ -30,10 +31,8 @@ export default class Wrapper extends React.Component {
     }
   }
 
-  startTranscribing() {
-    this.setState({
-      showPodPicker: false
-    });
+  setWrapperState(stateObj) {
+    this.setState(stateObj);
   }
 
   render() {
@@ -58,7 +57,7 @@ export default class Wrapper extends React.Component {
             <Transcriber as={Segment}
               title={ this.state.episodeTitle }
               audio={ this.state.selectedEpisode } 
-              startTranscribing={ this.startTranscribing.bind(this) }
+              setWrapperState={ this.setWrapperState }
             />
           </div>
         </Transition>

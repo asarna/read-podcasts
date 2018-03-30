@@ -1,6 +1,6 @@
 import React from 'react';
 import { getPodSearch, getEpisodes } from '../helpers/podsearch.js';
-import { Button, Input, Grid, Divider, Segment, Transition, Loader } from 'semantic-ui-react';
+import { Button, Input, Grid, Segment, Transition, Loader } from 'semantic-ui-react';
 import PodLister from './PodLister.js';
 
 export default class PodPicker extends React.Component {
@@ -74,7 +74,7 @@ export default class PodPicker extends React.Component {
       divided
     >
       <Grid.Column>
-      { this.state.podcasts.length == 0
+      { this.state.podcasts.length === 0
         ? <p>No results. Some terms you can try searching for: 'npr' or 'love and radio'.</p>
         : <PodLister 
             items={ this.state.podcasts }
