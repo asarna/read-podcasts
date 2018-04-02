@@ -16,12 +16,8 @@ export const getPodSearch = () => {
 }
 
 export const getEpisodes = (feedUrl) => {
-	const url = `https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}&api_key=${apiKey}`;
-	return axios.get(url)
-		.then((response) => {
-			return response.data;
-		})
-		.catch((error) => {
-    	return error;
-    })
+  const feedUrlEncoded = encodeURIComponent(feedUrl);
+  return axios.get(`/episodes/${feedUrlEncoded}`).then((response) => {
+    return response.data;
+  });
 }
