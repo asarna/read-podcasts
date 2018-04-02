@@ -25,13 +25,13 @@ export default class PodPicker extends React.Component {
       error: false,
       loadingPods: true,
       podcasts: [],
-			episodes: []
+      episodes: [],
+      showLister: true
     });
     getPodSearch().then((response) => {
       this.setState({
 				podcasts: response,
-        loadingPods: false,
-        showLister: true
+        loadingPods: false
 			});
     }).catch((error) => {
       this.setState({
