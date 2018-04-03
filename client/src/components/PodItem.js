@@ -25,12 +25,12 @@ export default class PodItem extends React.Component {
 			active={ this.props.active }
 		> 
     	<List.Content>
-	    	{ item.logo_url &&
+	    	{ (item.logo_url || item.scaled_logo_url) &&
 					<Image
 						size='tiny'
 						floated='left'
 						rounded
-						src={ item.logo_url }
+						src={ item.scaled_logo_url || item.logo_url }
 					/>
 				}
       	<List.Header>{ item.title.substring(0, 150) }</List.Header>

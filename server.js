@@ -46,7 +46,7 @@ app.get('/episodes/:feedUrl', (req, res, next) => {
   const apiKey = '6vf2n8xjaujvgkbhacgucxwynvu9jn6z6tkj3l94';
   const url = `https://api.rss2json.com/v1/api.json?rss_url=${req.params.feedUrl}&api_key=${apiKey}`;
   request(url, (error, response, body) => {
-    res.json(JSON.parse(body));
+    res.send(JSON.parse(body));
   });
 });
 
