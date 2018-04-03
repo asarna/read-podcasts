@@ -1,6 +1,6 @@
 import React from 'react';
 import { getPodSearch, getEpisodes } from '../helpers/podsearch.js';
-import { Button, Input, Grid, Segment, Transition, Loader } from 'semantic-ui-react';
+import { Button, Input, Grid, Segment, Transition, Loader, Form } from 'semantic-ui-react';
 import PodLister from './PodLister.js';
 
 export default class PodPicker extends React.Component {
@@ -105,18 +105,20 @@ export default class PodPicker extends React.Component {
 
 		return <div className='pod-picker'>
       <Segment color='olive'>
-        <Input 
-          type='text' 
-          id='search'
-          placeholder={ 'Search for a podcast...'}
-          fluid
-          action={<Button 
-            onClick={ this.search }
-            color='olive'
-            >
-              Search
-            </Button>}
-        />
+        <Form onSubmit={ this.search }>
+          <Input 
+            type='text' 
+            id='search'
+            placeholder={ 'Search for a podcast...'}
+            fluid
+            action={<Button 
+              type='submit'
+              color='olive'
+              >
+                Search
+              </Button>}
+          />
+        </Form>
       </Segment>
       <Transition 
         animation='fade down'
