@@ -79,8 +79,8 @@ export default class PodPicker extends React.Component {
 
   renderResults() {
     const { podcasts, loadingEpisodes, loadingPods, error, episodes } = this.state;
-    return <Grid 
-      as={Segment} 
+    return <Segment 
+      as={Grid} 
       columns={2} 
       divided
     >
@@ -96,16 +96,17 @@ export default class PodPicker extends React.Component {
       </Grid.Column>
       <Grid.Column>
         { loadingEpisodes && <Loader active /> }
-        { error ?
-          <p>Sorry, feed could  not be loaded at this time.</p> :
-          <PodLister
-            items={ episodes }
-            selectAction={ this.selectEpisode }
-            visible={ !loadingEpisodes }
-          />
+        { error && <p>Sorry, feed could  not be loaded at this time.</p> }
+        { episodes.length === 0 && !loadingEpisodes
+          ? <p></p>
+          : <PodLister
+          items={ episodes }
+          selectAction={ this.selectEpisode }
+          //visible={ !loadingEpisodes }
+        />
         }
       </Grid.Column>
-    </Grid>
+    </Segment>
   }
 
 	render() {
