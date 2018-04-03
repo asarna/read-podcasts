@@ -9,7 +9,10 @@
     "semantic-ui-react": "^0.76.0"
   },
   "devDependencies": {
-    "react-scripts": "1.0.13"
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-15": "^1.0.5",
+    "react-scripts": "1.0.13",
+    "react-test-renderer": "^15.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
