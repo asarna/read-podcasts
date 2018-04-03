@@ -13,12 +13,20 @@ export default class PodPicker extends React.Component {
       error: false,
       showLister: false,
       loadingPods: false,
-      loadingEpisodes: false
+      loadingEpisodes: false,
+      searchTerm: ''
 		}
 		this.search = this.search.bind(this);
 		this.listEpisodes = this.listEpisodes.bind(this);
     this.selectEpisode = this.selectEpisode.bind(this);
-	}
+    this.setSearchTerm = this.setSearchTerm.bind(this);
+  }
+  
+  setSearchTerm(e) {
+    this.setState({
+      searchTerm: e.target.value
+    });
+  }
 
 	search() {
     this.setState({
@@ -28,7 +36,7 @@ export default class PodPicker extends React.Component {
       episodes: [],
       showLister: true
     });
-    getPodSearch().then((response) => {
+    getPodSearch(this.state.searchTerm).then((response) => {
       this.setState({
 				podcasts: response,
         loadingPods: false
@@ -101,12 +109,14 @@ export default class PodPicker extends React.Component {
   }
 
 	render() {
-    const { showLister } = this.state;
+    const { showLister, searchTerm } = this.state;
 
 		return <div className='pod-picker'>
       <Segment color='olive'>
         <Form onSubmit={ this.search }>
           <Input 
+            onChange={ this.setSearchTerm }
+            value={ searchTerm }
             type='text' 
             id='search'
             placeholder={ 'Search for a podcast...'}

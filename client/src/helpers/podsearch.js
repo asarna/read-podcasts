@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-let query;
-
-export const getPodSearch = () => {
-  query = document.querySelector('#search').value;
+export const getPodSearch = (query) => {
   const url = `http://gpodder.net/search.json?q=${query}`;
   return axios.get(url)
     .then((response) => {
