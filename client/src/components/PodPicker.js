@@ -1,7 +1,7 @@
 import React from 'react';
-import { getPodSearch, getEpisodes } from '../helpers/podsearch.js';
 import { Button, Input, Grid, Segment, Transition, Loader, Form } from 'semantic-ui-react';
 import PodLister from './PodLister.js';
+import axios from 'axios';
 
 export default class PodPicker extends React.Component {
 
@@ -28,6 +28,38 @@ export default class PodPicker extends React.Component {
     });
   }
 
+  podSearch(query) {
+    const url = `http://gpodder.net/search.json?q=${query}`;
+    return axios.get(url).then((response) => {
+      let podcasts = response.data;
+      console.log('podcasts', podcasts);
+      podcasts.sort((a, b) => { //sort by url
+        if (a.website === b.website) {
+          return (a.subscribers < b.subscribers) ? 1 : -1;
+        }
+        return (a.website > b.website) ? 1 : -1;
+      });
+      let filteredPods = podcasts.filter((pod, index) => { //remove duplicates
+        return ((index === 0) || (pod.website !== podcasts[index - 1].website));
+      });
+      filteredPods.sort((a, b) => {
+        return (a.subscribers < b.subscribers) ? 1 : -1;
+      });
+      console.log('filteredpods', filteredPods);
+      return filteredPods;
+    })
+    .catch((error) => {
+    	return error;
+    });
+  }
+
+  getEpisodes(feedUrl) {
+    const feedUrlEncoded = encodeURIComponent(feedUrl);
+    return axios.get(`/episodes/${feedUrlEncoded}`).then((response) => {
+      return response.data;
+    });
+  }
+
 	search() {
     this.setState({
       error: false,
@@ -36,7 +68,7 @@ export default class PodPicker extends React.Component {
       episodes: [],
       showLister: true
     });
-    getPodSearch(this.state.searchTerm).then((response) => {
+    this.podSearch(this.state.searchTerm).then((response) => {
       this.setState({
 				podcasts: response,
         loadingPods: false
@@ -56,7 +88,7 @@ export default class PodPicker extends React.Component {
       loadingEpisodes: true,
       episodes: []
     });
-    getEpisodes(item.url)
+    this.getEpisodes(item.url)
       .then((response) => {
         this.setState({
           episodes: (response.items.length > 0) ? response.items : [],
