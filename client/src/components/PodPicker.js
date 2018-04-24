@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Input, Grid, Segment, Transition, Loader, Form } from 'semantic-ui-react';
 import PodLister from './PodLister.js';
 import axios from 'axios';
+import { PodList } from '../models/podList';
 
 export default class PodPicker extends React.Component {
 
@@ -30,28 +31,16 @@ export default class PodPicker extends React.Component {
 
   podSearch(query) {
     const url = `http://gpodder.net/search.json?q=${query}`;
+
     return axios.get(url).then((response) => {
-      let podcasts = response.data;
-      console.log('podcasts', podcasts);
-      podcasts.sort((a, b) => { //sort by url
-        if (a.website === b.website) {
-          return (a.subscribers < b.subscribers) ? 1 : -1;
-        }
-        return (a.website > b.website) ? 1 : -1;
-      });
-      let filteredPods = podcasts.filter((pod, index) => { //remove duplicates
-        return ((index === 0) || (pod.website !== podcasts[index - 1].website));
-      });
-      filteredPods.sort((a, b) => {
-        return (a.subscribers < b.subscribers) ? 1 : -1;
-      });
-      console.log('filteredpods', filteredPods);
-      return filteredPods;
+      let podcastList = new PodList(response.data);
+
+      return podcastList.filterList();
     })
     .catch((error) => {
     	return error;
     });
-  }
+  };
 
   getEpisodes(feedUrl) {
     const feedUrlEncoded = encodeURIComponent(feedUrl);
@@ -64,6 +53,7 @@ export default class PodPicker extends React.Component {
     this.setState({
       error: false,
       loadingPods: true,
+      loadingEpisodes: false,
       podcasts: [],
       episodes: [],
       showLister: true
