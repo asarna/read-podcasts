@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Input, Grid, Segment, Transition, Loader, Form } from 'semantic-ui-react';
-import PodLister from './PodLister.js';
+import { Grid, Segment, Transition, Loader } from 'semantic-ui-react';
+import PodLister from './PodLister';
 import axios from 'axios';
 import { PodList } from '../models/podList';
+import Search from './Search';
 
 export default class PodPicker extends React.Component {
 
@@ -134,24 +135,11 @@ export default class PodPicker extends React.Component {
     const { showLister, searchTerm } = this.state;
 
 		return <div className='pod-picker'>
-      <Segment color='olive'>
-        <Form onSubmit={ this.handleSearch }>
-          <Input 
-            onChange={ this.setSearchTerm }
-            value={ searchTerm }
-            type='text' 
-            id='search'
-            placeholder={ 'Search for a podcast...'}
-            fluid
-            action={<Button 
-              type='submit'
-              color='olive'
-              >
-                Search
-              </Button>}
-          />
-        </Form>
-      </Segment>
+      <Search
+        handleSearch={ this.handleSearch }
+        setSearchTerm={this.setSearchTerm}
+        searchTerm={searchTerm}
+      />
       <Transition 
         animation='fade down'
         duration={500}
