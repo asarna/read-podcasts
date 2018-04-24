@@ -35,6 +35,27 @@ export default class Transcriber extends React.Component {
         console.log(error);
       });
   };
+
+  createStream() {
+    const stream = recognizeFile(({
+      file: 'file.mp3',
+      token: this.state.token,
+      smart_formatting: true,
+      format: true, // adds capitals, periods, and a few other things (client-side)
+      model: 'en-US_BroadbandModel',
+      objectMode: true,
+      interim_results: true,
+    }));
+    this.stream = stream;
+    stream
+      .on('data', (msg) => {
+        if (msg.results[0].final) {
+          this.setState({ transcript: this.state.transcript.concat(msg.results[0].alternatives[0].transcript) })
+        }
+      })
+      .on('end', this.handleTranscriptEnd)
+      .on('error',() => {});
+  };
   
   startTranscribing() {
     this.setState({
@@ -42,24 +63,7 @@ export default class Transcriber extends React.Component {
     });
     download(this.props.audio).then(() => {
       this.getToken().then(() => {
-        const stream = recognizeFile(({
-          file: 'file.mp3',
-          token: this.state.token,
-          smart_formatting: true,
-          format: true, // adds capitals, periods, and a few other things (client-side)
-          model: 'en-US_BroadbandModel',
-          objectMode: true,
-          interim_results: true,
-        }));
-        this.stream = stream;
-        stream
-          .on('data', (msg) => {
-            if (msg.results[0].final) {
-              this.setState({ transcript: this.state.transcript.concat(msg.results[0].alternatives[0].transcript) })
-            }
-          })
-          .on('end', this.handleTranscriptEnd)
-          .on('error',() => {});
+        this.createStream();
       });
     });
   }

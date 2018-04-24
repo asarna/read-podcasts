@@ -17,7 +17,7 @@ export default class PodPicker extends React.Component {
       loadingEpisodes: false,
       searchTerm: ''
 		}
-		this.search = this.search.bind(this);
+		this.handleSearch = this.handleSearch.bind(this);
 		this.listEpisodes = this.listEpisodes.bind(this);
     this.selectEpisode = this.selectEpisode.bind(this);
     this.setSearchTerm = this.setSearchTerm.bind(this);
@@ -49,7 +49,7 @@ export default class PodPicker extends React.Component {
     });
   }
 
-	search() {
+	handleSearch() {
     this.setState({
       error: false,
       loadingPods: true,
@@ -124,7 +124,6 @@ export default class PodPicker extends React.Component {
           : <PodLister
           items={ episodes }
           selectAction={ this.selectEpisode }
-          //visible={ !loadingEpisodes }
         />
         }
       </Grid.Column>
@@ -136,7 +135,7 @@ export default class PodPicker extends React.Component {
 
 		return <div className='pod-picker'>
       <Segment color='olive'>
-        <Form onSubmit={ this.search }>
+        <Form onSubmit={ this.handleSearch }>
           <Input 
             onChange={ this.setSearchTerm }
             value={ searchTerm }
