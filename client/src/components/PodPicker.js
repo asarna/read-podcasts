@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Transition, Loader } from 'semantic-ui-react';
+import { Grid, Segment, Transition } from 'semantic-ui-react';
 import PodLister from './PodLister';
 import axios from 'axios';
 import { PodList } from '../models/podList';
@@ -101,32 +101,27 @@ export default class PodPicker extends React.Component {
   }
 
   renderResults() {
-    const { podcasts, loadingEpisodes, loadingPods, error, episodes } = this.state;
+    const { podcasts, loadingEpisodes, loadingPods, episodes, error } = this.state;
     return <Segment 
       as={Grid} 
       columns={2} 
       divided
     >
       <Grid.Column>
-      { loadingPods && <Loader active /> }
-      { podcasts.length === 0 && !loadingPods
-        ? <p>No results. Some terms you can try searching for: 'npr' or 'love and radio'.</p>
-        : <PodLister 
-            items={ podcasts }
-            selectAction={ this.listEpisodes }
-        />    
-      }
+        <PodLister 
+          loading={ loadingPods }
+          items={ podcasts }
+          selectAction={ this.listEpisodes }
+          noResultsMsg={ "No results. Some terms you can try search for: 'npr' or 'love and radio'." }
+        />
       </Grid.Column>
       <Grid.Column>
-        { loadingEpisodes && <Loader active /> }
-        { error && <p>Sorry, feed could  not be loaded at this time.</p> }
-        { episodes.length === 0 && !loadingEpisodes
-          ? <p></p>
-          : <PodLister
+        <PodLister 
+          loading={ loadingEpisodes }
           items={ episodes }
           selectAction={ this.selectEpisode }
+          noResultsMsg={ error && "Sorry, feed could not be loaded at this time." }
         />
-        }
       </Grid.Column>
     </Segment>
   }

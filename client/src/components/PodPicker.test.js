@@ -31,7 +31,7 @@ describe('PodPicker component', () => {
     el.setState({searchTerm: 'test'});
     await el.instance().handleSearch().then(() => {
       el.update();
-      expect(el.find(PodLister).length).toEqual(1);
+      expect(el.find(PodLister).length).toEqual(2);
       expect(el.find(PodLister).props().items).toEqual([{
         title: 'some podcast'
       }]);

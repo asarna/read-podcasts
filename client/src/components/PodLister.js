@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from 'semantic-ui-react';
+import { List, Loader } from 'semantic-ui-react';
 import PodItem from './PodItem.js';
 
 export default class PodLister extends React.Component {
@@ -17,13 +17,17 @@ export default class PodLister extends React.Component {
     });
   }
 
+  hasResults() {
+    return !(this.props.items.length === 0);
+  }
+
 	render() {
-		return <List 
+		return this.props.loading ? <Loader active /> : <List 
       divided 
       relaxed='very' 
       selection
       className='pod-lister'
-    > { this.props.items.map((pod) => {
+    > { this.hasResults() ? this.props.items.map((pod) => {
       return <PodItem 
       	item={ pod } 
       	key={ pod.title }
@@ -31,6 +35,6 @@ export default class PodLister extends React.Component {
         active={ (this.state.activeItem === pod.title) }
         setActiveItem={ this.setActiveItem.bind(this) }
       />
-    }) } </List>
+    }) : <p>{ this.props.noResultsMsg }</p> } </List>
 	}
 }
