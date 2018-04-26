@@ -1,5 +1,4 @@
 import React from 'react';
-import { download } from '../helpers/download.js';
 import { Button, Transition, Divider } from 'semantic-ui-react';
 import Transcript from './Transcript';
 import axios from 'axios';
@@ -56,12 +55,23 @@ export default class Transcriber extends React.Component {
       .on('end', this.handleTranscriptEnd)
       .on('error',() => {});
   };
+
+  download(url) {
+    const urlEncoded = encodeURIComponent(url);
+	  return axios.get(`/download/${urlEncoded}`)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error;
+      })
+  }
   
   startTranscribing() {
     this.setState({
       transcribing: true
     });
-    download(this.props.audio).then(() => {
+    this.download(this.props.audio).then(() => {
       this.getToken().then(() => {
         this.createStream();
       });
