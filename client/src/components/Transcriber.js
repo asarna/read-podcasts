@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Transition, Divider } from 'semantic-ui-react';
+import { Button, Transition, Divider, Message } from 'semantic-ui-react';
 import Transcript from './Transcript';
 import axios from 'axios';
 import recognizeFile from 'watson-speech/speech-to-text/recognize-file';
@@ -8,13 +8,14 @@ export default class Transcriber extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleTranscribeClick = this.handleTranscribeClick.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
     this.stopTranscribing = this.stopTranscribing.bind(this);
     this.state = {
       showTranscript: false,
       token: '',
-      transcript: ''
+      transcript: '',
+      error: false
     }
   }
 
@@ -30,7 +31,7 @@ export default class Transcriber extends React.Component {
           token: response.data
         });
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -40,12 +41,13 @@ export default class Transcriber extends React.Component {
       file: 'file.mp3',
       token: this.state.token,
       smart_formatting: true,
-      format: true, // adds capitals, periods, and a few other things (client-side)
+      format: true,
       model: 'en-US_BroadbandModel',
       objectMode: true,
       interim_results: true,
     }));
     this.stream = stream;
+
     stream
       .on('data', (msg) => {
         if (msg.results[0].final) {
@@ -53,8 +55,14 @@ export default class Transcriber extends React.Component {
         }
       })
       .on('end', this.handleTranscriptEnd)
-      .on('error',() => {});
+      .on('error', this.showError);
   };
+
+  showError() {
+    this.setState({
+      error: true
+    });
+  }
 
   download(url) {
     const urlEncoded = encodeURIComponent(url);
@@ -92,7 +100,7 @@ export default class Transcriber extends React.Component {
     this.stopTranscribing();
   }
 
-  handleClick() {
+  handleTranscribeClick() {
     this.setState({
       showTranscript: true
     });
@@ -115,12 +123,12 @@ export default class Transcriber extends React.Component {
   }
 
   render() {
-    const { showTranscript, transcript, transcribing } = this.state;
+    const { showTranscript, transcript, transcribing, error} = this.state;
 
     return <div>
       { !showTranscript &&
         <Button 
-          onClick={ this.handleClick }
+          onClick={ this.handleTranscribeClick }
           fluid
           color='olive'
         >
@@ -136,6 +144,9 @@ export default class Transcriber extends React.Component {
           <Divider hidden />
           <Button content='Stop' icon='stop' labelPosition='left' color='olive' onClick={ this.stopTranscribing }/>
           <Button content='Back to search' icon='left arrow' labelPosition='left' color='olive' onClick={ this.handleBackClick }/>
+          {error && transcribing && <Message negative>
+            <p>Sorry, there was an error.</p>
+          </Message>}
           <Transcript 
             title={ this.props.title } 
             transcript={ transcript }
