@@ -11,11 +11,13 @@ export default class Transcriber extends React.Component {
     this.handleTranscribeClick = this.handleTranscribeClick.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
     this.stopTranscribing = this.stopTranscribing.bind(this);
+    this.handleFormattedMessage = this.handleFormattedMessage.bind(this);
     this.state = {
       showTranscript: false,
       token: '',
       transcript: '',
-      error: false
+      error: false,
+      formattedMessages: []
     }
   }
 
@@ -45,18 +47,57 @@ export default class Transcriber extends React.Component {
       model: 'en-US_BroadbandModel',
       objectMode: true,
       interim_results: true,
+      speaker_labels: true,
+      timestamps: true,
+      resultsBySpeaker: true,
+      speakerlessInterim: true,
+      word_alternatives_threshold: 0.01
     }));
     this.stream = stream;
 
     stream
-      .on('data', (msg) => {
-        if (msg.results[0].final) {
-          this.setState({ transcript: this.state.transcript.concat(msg.results[0].alternatives[0].transcript) })
-        }
-      })
+      .on('data', this.handleFormattedMessage)
       .on('end', this.handleTranscriptEnd)
       .on('error', this.showError);
   };
+
+  handleFormattedMessage(msg) {
+    // if (msg.results[0].final) {
+    //   this.setState({ transcript: this.state.transcript.concat(msg.results[0].alternatives[0].transcript) })
+    // }
+    this.setState({ formattedMessages: this.state.formattedMessages.concat(msg) });
+  }
+
+  // ------------------ //
+
+  getCurrentInterimResult() {
+    const r = this.state.formattedMessages[this.state.formattedMessages.length - 1];
+
+    // When resultsBySpeaker is enabled, each msg.results array may contain multiple results.
+    // However, all results in a given message will be either final or interim, so just checking
+    // the first one still works here.
+    if (!r || !r.results || !r.results.length || r.results[0].final) {
+      return null;
+    }
+    return r;
+  }
+
+  getFinalAndLatestInterimResult() {
+    const final = this.getFinalResults();
+    const interim = this.getCurrentInterimResult();
+    if (interim) {
+      final.push(interim);
+    }
+    console.log('final', final);
+    return `${final}.`;
+  }
+
+  getFinalResults() {
+    return this.state.formattedMessages.filter(r => r.results &&
+      r.results.length && r.results[0].final);
+  }
+
+  // ------------------ //
 
   showError() {
     this.setState({
@@ -125,6 +166,8 @@ export default class Transcriber extends React.Component {
   render() {
     const { showTranscript, transcript, transcribing, error} = this.state;
 
+    const messages = this.getFinalAndLatestInterimResult();
+
     return <div>
       { !showTranscript &&
         <Button 
@@ -151,6 +194,7 @@ export default class Transcriber extends React.Component {
             title={ this.props.title } 
             transcript={ transcript }
             transcribing={ transcribing }
+            messages={ messages }
           />
         </div>
       </Transition>
