@@ -102,27 +102,30 @@ export default class PodPicker extends React.Component {
 
   renderResults() {
     const { podcasts, loadingEpisodes, loadingPods, episodes, error } = this.state;
-    return <Segment 
-      as={Grid} 
-      columns={2} 
-      divided
-    >
-      <Grid.Column>
-        <PodLister 
-          loading={ loadingPods }
-          items={ podcasts }
-          selectAction={ this.listEpisodes }
-          noResultsMsg={ "No results. Some terms you can try search for: 'npr' or 'love and radio'." }
-        />
-      </Grid.Column>
-      <Grid.Column>
-        <PodLister 
-          loading={ loadingEpisodes }
-          items={ episodes }
-          selectAction={ this.selectEpisode }
-          noResultsMsg={ error && "Sorry, feed could not be loaded at this time." }
-        />
-      </Grid.Column>
+    return <Segment>
+      <Grid
+        columns={2} 
+        divided
+        stretched
+        className={ 'podpicker' }
+      >
+        <Grid.Column>
+          <PodLister 
+            loading={ loadingPods }
+            items={ podcasts }
+            selectAction={ this.listEpisodes }
+            noResultsMsg={ "No results. Some terms you can try search for: 'npr' or 'love and radio'." }
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <PodLister 
+            loading={ loadingEpisodes }
+            items={ episodes }
+            selectAction={ this.selectEpisode }
+            noResultsMsg={ error && "Sorry, feed could not be loaded at this time." }
+          />
+        </Grid.Column>
+      </Grid>
     </Segment>
   }
 

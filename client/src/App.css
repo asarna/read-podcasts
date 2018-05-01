@@ -26,3 +26,11 @@
 .transcript p {
   line-height: 1.7em;
 }
+
+.pod-picker {
+  margin-bottom: 1rem;
+}
+
+.pod-picker .list {
+  height: 300px;
+}
