@@ -18,7 +18,8 @@ export default class PodLister extends React.Component {
   }
 
   hasResults() {
-    return !(this.props.items.length === 0);
+    const { items } = this.props;
+    return !(typeof items === 'undefined' || items.length === 0);
   }
 
 	render() {

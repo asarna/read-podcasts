@@ -16,12 +16,14 @@ export default class PodPicker extends React.Component {
       showLister: false,
       loadingPods: false,
       loadingEpisodes: false,
-      searchTerm: ''
+      searchTerm: '',
+      showEpisodes: false
 		}
 		this.handleSearch = this.handleSearch.bind(this);
 		this.listEpisodes = this.listEpisodes.bind(this);
     this.selectEpisode = this.selectEpisode.bind(this);
     this.setSearchTerm = this.setSearchTerm.bind(this);
+    this.handleBackArrow = this.handleBackArrow.bind(this);
   }
   
   setSearchTerm(e) {
@@ -39,7 +41,10 @@ export default class PodPicker extends React.Component {
       return podcastList.filterList();
     })
     .catch((error) => {
-    	return error;
+    	this.setState({
+        loadingPods: false,
+        error: true
+      });
     });
   };
 
@@ -57,7 +62,8 @@ export default class PodPicker extends React.Component {
       loadingEpisodes: false,
       podcasts: [],
       episodes: [],
-      showLister: true
+      showLister: true,
+      showEpisodes: false
     });
     return this.podSearch(this.state.searchTerm).then((response) => {
       this.setState({
@@ -77,7 +83,8 @@ export default class PodPicker extends React.Component {
     this.setState({
       error: false,
       loadingEpisodes: true,
-      episodes: []
+      episodes: [],
+      showEpisodes: true
     });
     this.getEpisodes(item.url)
       .then((response) => {
@@ -100,33 +107,56 @@ export default class PodPicker extends React.Component {
     this.props.selectToTranscribe(item);
   }
 
+  handleBackArrow() {
+    this.setState({
+      showEpisodes: false
+    });
+  }
+
   renderResults() {
-    const { podcasts, loadingEpisodes, loadingPods, episodes, error } = this.state;
-    return <Segment>
-      <Grid
-        columns={2} 
-        divided
-        stretched
-        className={ 'podpicker' }
+    const { podcasts, loadingEpisodes, loadingPods, episodes, error, showEpisodes } = this.state;
+    return <div>
+      { showEpisodes && <Responsive 
+        as={ Menu } 
+        attached='top' 
+        maxWidth={Responsive.onlyTablet.maxWidth} 
+        secondary
       >
-        <Grid.Column>
-          <PodLister 
-            loading={ loadingPods }
-            items={ podcasts }
-            selectAction={ this.listEpisodes }
-            noResultsMsg={ "No results. Some terms you can try search for: 'npr' or 'love and radio'." }
-          />
-        </Grid.Column>
-        <Grid.Column>
-          <PodLister 
-            loading={ loadingEpisodes }
-            items={ episodes }
-            selectAction={ this.selectEpisode }
-            noResultsMsg={ error && "Sorry, feed could not be loaded at this time." }
-          />
-        </Grid.Column>
-      </Grid>
-    </Segment>
+        <Menu.Item
+          onClick={ this.handleBackArrow }
+        >
+          <Icon name='arrow left' />
+        </Menu.Item>
+      </Responsive>}
+      <Segment attached>
+        <Grid
+          columns={ showEpisodes ? 2 : 1} 
+          divided
+          stretched
+          className={ 'podpicker' }
+          doubling
+        >
+          <Grid.Column
+            only={ showEpisodes && 'computer'}
+          >
+            <PodLister
+              loading={ loadingPods }
+              items={ podcasts }
+              selectAction={ this.listEpisodes }
+              noResultsMsg={ "No results. Some terms you can try search for: 'npr' or 'love and radio'." }
+            />
+          </Grid.Column>
+          { showEpisodes && <Grid.Column>
+            <PodLister 
+              loading={ loadingEpisodes }
+              items={ episodes }
+              selectAction={ this.selectEpisode }
+              noResultsMsg={ error && "Sorry, feed could not be loaded at this time." }
+            />
+          </Grid.Column> }
+        </Grid>
+      </Segment>
+    </div>
   }
 
 	render() {
