@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Transition } from 'semantic-ui-react';
+import { Grid, Segment, Transition, Menu, Responsive, Icon } from 'semantic-ui-react';
 import PodLister from './PodLister';
 import axios from 'axios';
 import { PodList } from '../models/podList';
@@ -33,7 +33,7 @@ export default class PodPicker extends React.Component {
   }
 
   podSearch(query) {
-    const url = `http://gpodder.net/search.json?q=${query}`;
+    const url = `https://gpodder.net/search.json?q=${query}`;
 
     return axios.get(url).then((response) => {
       let podcastList = new PodList(response.data);
