@@ -9,12 +9,20 @@ export default class PodLister extends React.Component {
     this.state = {
       activeItem: ''
     };
+    this.select = this.select.bind(this);
   }
 
   setActiveItem(podtitle) {
     this.setState({
       activeItem: podtitle
     });
+  }
+
+  select(item) {
+    if (this.props.showRightColumn) {
+      this.props.showRightColumn();
+    };
+    this.props.selectAction(item);
   }
 
   hasResults() {
@@ -32,7 +40,7 @@ export default class PodLister extends React.Component {
       return <PodItem 
       	item={ pod } 
       	key={ pod.title }
-      	selectAction={ this.props.selectAction }
+      	selectAction={ this.select }
         active={ (this.state.activeItem === pod.title) }
         setActiveItem={ this.setActiveItem.bind(this) }
       />
