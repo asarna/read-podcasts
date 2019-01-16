@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Transition, Menu, Responsive, Icon } from 'semantic-ui-react';
+import { Transition, Responsive } from 'semantic-ui-react';
 import PodLister from './PodLister';
 import axios from 'axios';
 import { PodList } from '../models/podList';
@@ -17,7 +17,7 @@ export default class PodPicker extends React.Component {
       showLister: false,
       loadingPods: false,
       loadingEpisodes: false,
-      searchTerm: ''
+      searchTerm: 'npr story of the day'
 		}
 		this.handleSearch = this.handleSearch.bind(this);
 		this.listEpisodes = this.listEpisodes.bind(this);

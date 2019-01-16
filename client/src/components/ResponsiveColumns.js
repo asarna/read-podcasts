@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Segment, Transition, Menu, Responsive, Icon } from 'semantic-ui-react';
+import { Grid, Segment, Menu, Responsive, Icon } from 'semantic-ui-react';
 
 export default class ResponsiveColumns extends React.Component {
   constructor(props) {

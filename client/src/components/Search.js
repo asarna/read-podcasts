@@ -13,7 +13,7 @@ export default class Search extends React.Component {
         value={ searchTerm }
         type='text' 
         id='search'
-        placeholder={ 'Search for a podcast...'}
+        // placeholder={ 'Search for a podcast...'}
         fluid
         action={<Button 
           type='submit'
