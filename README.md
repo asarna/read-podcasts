@@ -16,7 +16,7 @@ npm start
 
 This project uses the GPodder API, RSS2JSON and IBM Watson Speech to Text to search for and transcribe podcast episodes.
 
-Note: RSS2JSON and IBM Watson are free services subject to monthly usage limits.
+Note: This project is for demo use only. RSS2JSON and IBM Watson are free services subject to monthly usage limits.
 
 ## `create-react-app` with a server example
 
